@@ -1,5 +1,6 @@
 package com.bzh.scope.web;
 
+import com.bzh.scope.data.Counter;
 import com.bzh.scope.data.Event;
 import com.bzh.scope.data.MyData;
 import com.bzh.scope.service.MyService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class MyController  {
+public class MyController {
 
     @Autowired
     private MyService service;
@@ -20,17 +21,22 @@ public class MyController  {
     @Autowired
     private Event event;
 
-    @PostMapping(value="/data/{name}")
+    @Autowired
+    private Counter counter;
+
+    @PostMapping(value = "/data/{name}")
     public CreateResponse create(@PathVariable("name") String name) {
 
-        event.addInfo("method" ,"create");
+        event.addInfo("method", "create");
 
         MyData data = service.createDate(name);
         data = service.changeId(data);
 
-        event.getInfo().forEach( (k,v) -> {
-            log.info("controler -> {}:{}",k,v);
+        event.getInfo().forEach((k, v) -> {
+            log.info("controler -> {}:{}", k, v);
         });
+
+        log.info("Counter -> {}", counter);
 
         return CreateResponse.builder().id(data.getId()).build();
     }

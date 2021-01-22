@@ -18,7 +18,6 @@ public class MyService {
     private Id id;
 
     public MyData createDate(String name) {
-
         log.info("first id {}" , id.getId());
         String id_1 = id.getId();
         log.info("second id {}" , id_1);
